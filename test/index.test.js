@@ -8,6 +8,7 @@ const { Readable, Transform, Writable } = require('stream');
 // import object to test
 const { createLineSplitterStream } = require('../src/index.js');
 const { create } = require('lodash');
+const { chdir } = require('process');
 
 suite('ms-csv', function() {
 
@@ -49,6 +50,15 @@ suite('ms-csv', function() {
 
         suite('pipe()', function() {
 
+            const pushTextStream = function(text) {
+                return new Readable({
+                    read(size) {
+                        this.push(text);
+                        this.push(null);
+                    }
+                });
+            }
+
             const saveToArrayStream = function() {
 
                 const that = {
@@ -85,7 +95,22 @@ suite('ms-csv', function() {
                 
                 const target = createLineSplitterStream(',');
                 const stream = new saveToArrayStream();
-                Readable.from('1,2'.split(''))
+                pushTextStream('1,2')
+                    .pipe(target)
+                    .pipe(stream.writable)
+                    .on('finish', function() {
+                        let actual = stream.value;
+                        assert.deepEqual(actual, expected);
+                    });
+
+            });
+
+            test('should return an array with two values when stream passed contains two values and no splitter character has been set', function() {
+                const expected = ['1', '2'];
+                
+                const target = createLineSplitterStream();
+                const stream = new saveToArrayStream();
+                pushTextStream('1\r\n2')
                     .pipe(target)
                     .pipe(stream.writable)
                     .on('finish', function() {

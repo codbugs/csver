@@ -15,6 +15,22 @@ suite('ma-csv', function() {
 
         suite('new()', function() {
 
+            test('should throw error when passing a parameter different from a string', function() {
+                assert.throw(() => new createCsvParserAsObject(null), TypeError);
+                assert.throw(() => new createCsvParserAsObject(true), TypeError);
+                assert.throw(() => new createCsvParserAsObject(false), TypeError);
+                assert.throw(() => new createCsvParserAsObject(1), TypeError);
+                assert.throw(() => new createCsvParserAsObject(0), TypeError);
+                assert.throw(() => new createCsvParserAsObject(-1), TypeError);
+                assert.throw(() => new createCsvParserAsObject([]), TypeError);
+                assert.throw(() => new createCsvParserAsObject({}), TypeError);
+                assert.throw(() => new createCsvParserAsObject(function() {}), TypeError);
+            });
+
+            test('should throw error when passing an empty string', function() {
+                assert.throw(() => new createCsvParserAsObject(''), TypeError);
+            });
+
             test('should return an Array object', function() {
 
                 const csv = createCsvParserAsObject(filePath).then(value => {

@@ -1,11 +1,12 @@
 // imports
 const _ = require('lodash/core');
+const fs = require('fs');
 const { Writable } = require('stream');
 const csvParserAsStream = require('./csvParserStream.js');
 
 
 // stream definition
-module.exports = function(path) {
+module.exports = function() {
 
     const collection = [];
 
@@ -18,7 +19,9 @@ module.exports = function(path) {
     });
 
     return new Promise(function(resolve, reject) {
-        csvParserAsStream(path)
+        fs.createReadStream(path)
+            .pipe(createLineSplitter())
+            .pipe(createColumnSplitter())
             .pipe(stream)
             .on('finish', function() {
                 resolve(collection);       

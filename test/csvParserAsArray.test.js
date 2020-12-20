@@ -13,7 +13,7 @@ suite('ma-csv', function() {
 
     suite('csvParserAsArray', function() {
 
-        const filePath = './data/test_data.csv';
+        const filePath = './test/data/test_data.csv';
 
         suite('new()', function() {
 

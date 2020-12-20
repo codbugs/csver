@@ -2,8 +2,7 @@
 const _ = require('lodash/core');
 const fs = require('fs');
 const { Writable } = require('stream');
-const createLineSplitter = require('./lineSplitterStream.js');
-const createColumnSplitter = require('./columnSplitterStream.js');
+const csvParserAsStream = require('./csvParserStream.js');
 
 
 // stream definition

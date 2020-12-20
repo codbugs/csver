@@ -4,9 +4,23 @@ const { Transform } = require('stream');
 
 
 // stream definition
-module.exports = function() {
+module.exports = function(splitter) {
 
-    const expression = new RegExp('([^,]*(,|$))', 'gi');
+    // check parameter value
+    if(!_.isUndefined(splitter)) {
+        if(!_.isString(splitter)) {
+            throw new TypeError('splitter parameter must be a string');
+        }
+
+        if(_.isEmpty(splitter)) {
+            throw new TypeError('splitter parameter must not be an empty string');
+        }
+    }
+
+    // set default parameter value if not passed
+    splitter = splitter || ',';
+
+    const expression = new RegExp(`([^${splitter}]*(${splitter}|$))`, 'gi');
 
     // return the stream to split data in lines
     return new Transform({
@@ -18,7 +32,7 @@ module.exports = function() {
             
             matches.pop(); // last item is always an empty string because of the regular expression
 
-            matches = matches.map(i => i.endsWith(',') ? i.slice(0, i.length-1) : i);
+            matches = matches.map(i => i.endsWith(splitter) ? i.slice(0, i.length-1) : i);
 
             this.push(matches);
             next();

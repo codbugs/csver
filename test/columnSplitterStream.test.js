@@ -15,8 +15,30 @@ suite('ma-csv', function() {
 
         suite('new()', function() {
 
+            test('should throw error when passing a parameter different from a string', function() {
+                assert.throw(() => new createColumnSplitterStream(null), TypeError);
+                assert.throw(() => new createColumnSplitterStream(true), TypeError);
+                assert.throw(() => new createColumnSplitterStream(false), TypeError);
+                assert.throw(() => new createColumnSplitterStream(1), TypeError);
+                assert.throw(() => new createColumnSplitterStream(0), TypeError);
+                assert.throw(() => new createColumnSplitterStream(-1), TypeError);
+                assert.throw(() => new createColumnSplitterStream([]), TypeError);
+                assert.throw(() => new createColumnSplitterStream({}), TypeError);
+                assert.throw(() => new createColumnSplitterStream(function() {}), TypeError);
+            });
+
+            test('should throw error when passing an empty string', function() {
+                assert.throw(() => new createColumnSplitterStream(''), TypeError);
+            });
+
             test('should return a Transform object when not passing parameter', function() {
                 const actual = new createColumnSplitterStream();
+
+                assert.instanceOf(actual, Transform);
+            });
+            
+            test('should return a Transform object when passing a string', function() {
+                const actual = new createColumnSplitterStream(',');
 
                 assert.instanceOf(actual, Transform);
             });
@@ -102,6 +124,42 @@ suite('ma-csv', function() {
                 const stream = new saveResult();
                 
                 pushTextStream('abc,def')
+                    .pipe(target)
+                    .pipe(stream.writable)
+                    .on('finish', function() {
+                        let actual = stream.value;
+                        assert.deepEqual(actual.length, expected.length, 'array size');
+                        assert.deepEqual(actual[0], expected[0], 'first item');
+                        assert.deepEqual(actual[1], expected[1], 'second item');
+                    });
+            });
+
+            test('should return an array with two items when passing ""abc",def"', function() {
+                const expected = ['"abc"', "def"];
+
+                const target = createColumnSplitterStream();
+                const stream = new saveResult();
+                
+                pushTextStream('"abc",def')
+                    .pipe(target)
+                    .pipe(stream.writable)
+                    .on('finish', function() {
+                        let actual = stream.value;
+                        assert.deepEqual(actual.length, expected.length, 'array size');
+                        assert.deepEqual(actual[0], expected[0], 'first item');
+                        assert.deepEqual(actual[1], expected[1], 'second item');
+                    });
+            });
+
+            
+
+            test('should return an array with two items when passing ""abc";def"', function() {
+                const expected = ['"abc"', "def"];
+
+                const target = createColumnSplitterStream(';');
+                const stream = new saveResult();
+                
+                pushTextStream('"abc";def')
                     .pipe(target)
                     .pipe(stream.writable)
                     .on('finish', function() {

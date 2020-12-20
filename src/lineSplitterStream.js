@@ -5,6 +5,7 @@ const { Transform } = require('stream');
 
 // stream definition
 module.exports = function(splitter) {
+
     // check parameter value
     if(!_.isUndefined(splitter)) {
         if(!_.isString(splitter)) {

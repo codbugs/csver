@@ -83,7 +83,6 @@ suite('ma-csv', function() {
                     .pipe(stream.writable)
                     .on('finish', function() {
                         let actual = stream.value;
-                        console.log('>>> actual is ', actual);
                         assert.deepEqual(actual, expected);
                     });
             });

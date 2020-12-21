@@ -12,6 +12,36 @@ suite('ma-csv', function() {
 
         suite('new()', function() {
 
+            suite('options', function() {
+                
+                test('should throw error when is different from a string or an object', function() {
+                    assert.throw(() => new createConfiguration(null), TypeError);
+                    assert.throw(() => new createConfiguration(true), TypeError);
+                    assert.throw(() => new createConfiguration(false), TypeError);
+                    assert.throw(() => new createConfiguration(1), TypeError);
+                    assert.throw(() => new createConfiguration(0), TypeError);
+                    assert.throw(() => new createConfiguration(-1), TypeError);
+                    assert.throw(() => new createConfiguration([]), TypeError);
+                    assert.throw(() => new createConfiguration(function() {}, TypeError));
+                });
+
+                test('should throw error when empty string is passed', function() {
+                    assert.throw(() => new createConfiguration(''), TypeError);
+                });
+
+                test('should return a configuration object with filePath parameter equals to the string passed', function() {
+                    const expected = '/path/to/the/file.csv';
+
+                    const configuration = createConfiguration(expected);
+                    const actual = configuration.filePath;
+
+                    assert.deepEqual(actual, expected);
+                });
+
+            });
+
+
+            
             suite('columnSplitter parameter', function() {
 
                 test('should throw error when is different from a string', function() {

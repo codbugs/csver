@@ -16,8 +16,19 @@ module.exports = function(options) {
         // headers: [],
     };
 
-    options = _.extend(defaults, options);
+    // initialize input parameters with the default options in case of being an object
+    if(_.isObject(options)) {
+        options = _.extend(defaults, options);
+    }
 
+    // initialize filePath with the default options in case of being a string
+    if(_.isString(options)) {
+        options = _.extend(defaults, { filePath: options });
+    }
+
+
+    // parameters checking
+    
     if(!_.isString(options.columnSplitter)) {
         throw new TypeError('columnSplitter must be a string');
     }

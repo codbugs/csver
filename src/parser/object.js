@@ -1,7 +1,7 @@
 // imports
 const _ = require('lodash/core');
 const { Writable } = require('stream');
-const csvParserAsStream = require('./csvParserStream.js');
+const csvParserAsStream = require('./stream.js');
 
 
 // stream definition
@@ -18,12 +18,27 @@ module.exports = function(path) {
         }
     }
     
+    let headers = [];
     const collection = [];
 
     const stream = new Writable({
         objectMode: true,
         write(chunk, encode, next) {
-            collection.push(chunk);
+            
+            // set the header fields the first chunk received
+            if(_.isEmpty(headers)) {
+                headers = chunk;
+                next();
+                return;
+            }
+
+            // object creation from headers
+            let output = {};
+            headers.forEach(function(header, index) {
+                output[header] = chunk[index];
+            });
+
+            collection.push(output);
             next();
         }
     });
@@ -33,6 +48,6 @@ module.exports = function(path) {
             .pipe(stream)
             .on('finish', function() {
                 resolve(collection);       
-            })
+            });
     });
 }

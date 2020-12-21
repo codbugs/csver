@@ -4,7 +4,7 @@ const { assert } = require('chai');
 
 
 // import object to test
-const createCsvParserAsObject = require('../src/csvParserAsObject.js');
+const createCsvParserAsObject = require('../../src/parser/object.js');
 
 
 suite('ma-csv', function() {

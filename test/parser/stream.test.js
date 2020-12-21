@@ -6,7 +6,7 @@ const { assert } = require('chai');
 const { Transform } = require('stream');
 
 // import object to test
-const createCsvParserStream = require('../src/csvParserStream.js');
+const createCsvParserStream = require('../../src/parser/stream.js');
 
 
 suite('ma-csv', function() {

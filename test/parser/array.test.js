@@ -6,7 +6,7 @@ const { assert } = require('chai');
 const { Readable, Transform, Writable } = require('stream');
 
 // import object to test
-const createCsvParserAsArray = require('../src/csvParserAsArray.js');
+const createCsvParserAsArray = require('../../src/parser/array.js');
 
 
 suite('ma-csv', function() {

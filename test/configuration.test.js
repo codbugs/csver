@@ -53,7 +53,7 @@ suite('ma-csv', function() {
                     }), TypeError);
                 });
 
-                test('should return the value passed', function() {
+                test('should return the same value as the parameter provided', function() {
                     const expected = ';;;';
                     const configuration = new createConfiguration({
                         columnSplitter: expected,
@@ -62,7 +62,79 @@ suite('ma-csv', function() {
 
                     assert.deepEqual(configuration.columnSplitter, expected);
                 });
+
+                test('should return comma character if no parameter is provided', function() {
+                    const expected = ',';
+                    const configuration = new createConfiguration({
+                        filePath: './file.csv'
+                    });
+
+                    assert.deepEqual(configuration.columnSplitter, expected);
+                });
             });
+
+
+            suite('lineSplitter parameter', function() {
+
+                test('should throw error when is different from a string', function() {
+                    assert.throw(() => new createConfiguration({
+                        lineSplitter: null,
+                        filePath: './file.csv'
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        lineSplitter: true,
+                        filePath: './file.csv'
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        lineSplitter: false,
+                        filePath: './file.csv'
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        lineSplitter: 1,
+                        filePath: './file.csv'
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        lineSplitter: 0,
+                        filePath: './file.csv'
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        lineSplitter: -1,
+                        filePath: './file.csv'
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        lineSplitter: [],
+                        filePath: './file.csv'
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        lineSplitter: {},
+                        filePath: './file.csv'
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        lineSplitter: function() {},
+                        filePath: './file.csv'
+                    }), TypeError);
+                });
+
+                test('should return the same value as the parameter provided', function() {
+                    const expected = ';;;';
+                    const configuration = new createConfiguration({
+                        lineSplitter: expected,
+                        filePath: './file.csv'
+                    });
+
+                    assert.deepEqual(configuration.lineSplitter, expected);
+                });
+
+                test('should return \r\n if no parameter is provided', function() {
+                    const expected = '\r\n';
+                    const configuration = new createConfiguration({
+                        filePath: './file.csv'
+                    });
+
+                    assert.deepEqual(configuration.lineSplitter, expected);
+                });
+            });
+
 
             suite('filePath parameter', function() {
 

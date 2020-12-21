@@ -22,6 +22,9 @@ module.exports = function(options) {
         throw new TypeError('columnSplitter must be a string');
     }
 
+    if(!_.isString(options.lineSplitter)) {
+        throw new TypeError('lineSplitter must be a string');
+    }
 
     if(_.isEmpty(options.filePath)) {
         throw new TypeError('filePath must be defined');

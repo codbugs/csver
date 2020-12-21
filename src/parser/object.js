@@ -8,15 +8,18 @@ const csvParserAsStream = require('./stream.js');
 module.exports = function(path) {
 
     // check parameter value
-    if(!_.isUndefined(path)) {
-        if(!_.isString(path)) {
-            throw new TypeError('path parameter must be a string');
-        }
-
-        if(_.isEmpty(path)) {
-            throw new TypeError('path parameter must not be an empty string');
-        }
+    if(_.isUndefined(path)) {
+        throw new TypeError('path parameter must be a string');
     }
+    
+    if(!_.isString(path)) {
+        throw new TypeError('path parameter must be a string');
+    }
+
+    if(_.isEmpty(path)) {
+        throw new TypeError('path parameter must not be an empty string');
+    }
+    
     
     let headers = [];
     const collection = [];

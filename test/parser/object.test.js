@@ -16,6 +16,7 @@ suite('ma-csv', function() {
         suite('new()', function() {
 
             test('should throw error when passing a parameter different from a string', function() {
+                assert.throw(() => new createCsvParserAsObject(), TypeError);
                 assert.throw(() => new createCsvParserAsObject(null), TypeError);
                 assert.throw(() => new createCsvParserAsObject(true), TypeError);
                 assert.throw(() => new createCsvParserAsObject(false), TypeError);

@@ -1,8 +1,8 @@
 // imports
 const _ = require('lodash/core');
 const fs = require('fs');
-const createLineSplitter = require('../lineSplitterStream.js');
-const createColumnSplitter = require('../columnSplitterStream.js');
+const createLineSplitter = require('../stream/lineSplitter.js');
+const createColumnSplitter = require('../stream/columnSplitter.js');
 
 
 // stream definition

@@ -6,7 +6,7 @@ const { assert } = require('chai');
 const { Readable, Transform, Writable } = require('stream');
 
 // import object to test
-const createColumnSplitterStream = require('../src/columnSplitterStream.js');
+const createColumnSplitterStream = require('../../src/stream/columnSplitter.js');
 
 
 suite('ma-csv', function() {

@@ -53,7 +53,7 @@ suite('ma-csv', function() {
 
         suite('asArray method', function() {
 
-            const filePath = './data/test_data.csv';
+            const filePath = './test/data/test_data.csv';
 
             test('should return a Promise', function() {
                 const parser = new csv(filePath);
@@ -84,7 +84,7 @@ suite('ma-csv', function() {
         
         suite('asObject method', function() {
 
-            const filePath = './data/test_data.csv';
+            const filePath = './test/data/test_data.csv';
 
             test('should return a Promise', function() {
                 const parser = new csv(filePath);
@@ -125,7 +125,7 @@ suite('ma-csv', function() {
 
         suite('asStream method', function() {
 
-            const filePath = './data/test_data.csv';
+            const filePath = './test/data/test_data.csv';
 
             test('should return a Transform stream', function() {
                 const parser = new csv(filePath);

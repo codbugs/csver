@@ -6,7 +6,7 @@ const { assert } = require('chai');
 const createConfiguration = require('../src/configuration.js');
 
 
-suite('ma-csv', function() {
+suite('csver', function() {
 
     suite('configuration', function() {
 

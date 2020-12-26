@@ -43,5 +43,5 @@ Configuration object with:
 ### **asArray()**
 Returns a `Transform` stream. Each chunk is an `Array` with data for the line read excluding the header.
 
-#### **asObject()**
+### **asObject()**
 Returns a `Transform` stream. Each chunk is an `Object`, properties as the headers of the file, and data as the line read.

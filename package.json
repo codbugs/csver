@@ -2,14 +2,14 @@
   "name": "csver",
   "version": "1.0.0",
   "description": "A CSV file reader and parser based on Node.js `Stream` module",
-  "homepage": "https://github.com/codbugs/csverse",
+  "homepage": "https://github.com/codbugs/csver",
   "bugs": {
-    "url": "https://github.com/codbugs/csverse/issues",
+    "url": "https://github.com/codbugs/csver/issues",
     "email": "coding.bugs@outlook.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/codbugs/csverse"
+    "url": "https://github.com/codbugs/csver"
   },
   "main": "./src/index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   },
   "keywords": ["csv", "parser", "stream", "array", "object"],
   "author": "coding.bugs@outlook.com",
-  "license": "https://github.com/codbugs/csverse/blob/main/LICENSE",
+  "license": "https://github.com/codbugs/csver/blob/main/LICENSE",
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^8.2.1",

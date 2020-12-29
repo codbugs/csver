@@ -20,7 +20,7 @@ module.exports = function(splitter) {
     // set default parameter value if not passed
     splitter = splitter || ',';
 
-    const expression = new RegExp(`([^${splitter}]*(${splitter}|$))`, 'gi');
+    const expression = new RegExp(`(([^${splitter}"]*)|("[^""]+"))(${splitter}|$)`, 'gi');
 
     // return the stream to split data in lines
     return new Transform({

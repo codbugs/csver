@@ -6,20 +6,18 @@ const createColumnSplitter = require('../stream/columnSplitter.js');
 
 
 // stream definition
-module.exports = function(path) {
+module.exports = function(options) {
+
+    const path = options.filePath;
+    const columnSplitter = options.columnSplitter;
+    const lineSplitter = options.lineSplitter;
 
     // check parameter value
-    if(!_.isUndefined(path)) {
-        if(!_.isString(path)) {
-            throw new TypeError('path parameter must be a string');
-        }
-
-        if(_.isEmpty(path)) {
-            throw new TypeError('path parameter must not be an empty string');
-        }
+    if(!_.isObject(options)) {
+        throw new TypeError('options parameter must be an object');
     }
         
     return fs.createReadStream(path)
-        .pipe(createLineSplitter())
-        .pipe(createColumnSplitter());
+        .pipe(createLineSplitter(lineSplitter))
+        .pipe(createColumnSplitter(columnSplitter));
 }

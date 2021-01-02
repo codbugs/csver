@@ -1,5 +1,6 @@
 const createConfiguration = require('./configuration.js');
 const parseAsArray = require('./parser/stream.js');
+const headerAvoider = require('./stream/headerAvoider.js');
 const objectTransformer = require('./stream/objectTransformer.js');
 
 module.exports = function(options) {
@@ -8,12 +9,17 @@ module.exports = function(options) {
     
     return {
         asArray() {
-            return parseAsArray(configuration.filePath);
+            const data = parseAsArray(configuration);
+
+            return configuration.hasHeaders 
+                ? data.pipe(new headerAvoider()) 
+                : data;
         },
 
         asObject() {
-            return parseAsArray(configuration.filePath)
-                .pipe(objectTransformer());
+            const data = parseAsArray(configuration);
+            
+            return data.pipe(new objectTransformer());
         },
     };
 };

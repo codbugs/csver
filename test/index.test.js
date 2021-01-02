@@ -78,11 +78,35 @@ suite('csver', function() {
                     
             });
 
-            test('should return 30 items', function() {
+            test('should return 30 items when hasHeaders has been passed as false', function() {
                 const expected = 30;
                 let actual = 0;
                 
-                const parser = new csver(filePath);
+                const parser = new csver({
+                    filePath: filePath,
+                    hasHeaders: false
+                });
+
+                parser.asArray().pipe(new Writable({
+                    objectMode: true,
+                    write(chunk, encoding, next) {
+                        actual++;
+                        next();
+                    }
+                }))
+                .on('finish', function() {
+                    assert.deepEqual(actual, expected);
+                });
+            });
+
+            test('should return 29 items when hasHeaders has been passed as true', function() {
+                const expected = 29;
+                let actual = 0;
+                
+                const parser = new csver({
+                    filePath: filePath,
+                    hasHeaders: true
+                });
 
                 parser.asArray().pipe(new Writable({
                     objectMode: true,
@@ -135,7 +159,7 @@ suite('csver', function() {
 
             suite('first item values', function() {
 
-                test('should return 81145628 as show_id field for the first item', function() {
+                test('should return 81145628 as show_id field for the first item', function(done) {
                     const expected = '81145628';
                     let counter = 0;
                     let actual = '';
@@ -153,11 +177,12 @@ suite('csver', function() {
                         }
                     }))
                     .on('finish', function() {
-                        assert.deepEqual(actual, expected); 
+                        assert.deepEqual(actual, expected, 'show ids are different');
+                        done();
                     });
                 });
     
-                test('should return Movie as type field for the first item', function() {
+                test('should return Movie as type field for the first item', function(done) {
                     const expected = 'Movie';
                     let counter = 0;
                     let actual = '';
@@ -175,11 +200,12 @@ suite('csver', function() {
                         }
                     }))
                     .on('finish', function() {
-                        assert.deepEqual(actual, expected); 
+                        assert.deepEqual(actual, expected);
+                        done();
                     });
                 });
     
-                test('should return "Norm of the North: King Sized Adventure" as title field for the first item', function() {
+                test('should return "Norm of the North: King Sized Adventure" as title field for the first item', function(done) {
                     const expected = 'Norm of the North: King Sized Adventure';
                     let counter = 0;
                     let actual = '';
@@ -198,10 +224,11 @@ suite('csver', function() {
                     }))
                     .on('finish', function() {
                         assert.deepEqual(actual, expected); 
+                        done();
                     });
                 });
     
-                test('should return "Richard Finn, Tim Maltby" as director field for the first item', function() {
+                test('should return "Richard Finn, Tim Maltby" as director field for the first item', function(done) {
                     const expected = '"Richard Finn, Tim Maltby"';
                     let counter = 0;
                     let actual = '';
@@ -219,11 +246,12 @@ suite('csver', function() {
                         }
                     }))
                     .on('finish', function() {
-                        assert.deepEqual(actual, expected); 
+                        assert.deepEqual(actual, expected);
+                        done();
                     });
                 });
     
-                test('should return "Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson" as cast field for the first item', function() {
+                test('should return "Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson" as cast field for the first item', function(done) {
                     const expected = '"Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson"';
                     let counter = 0;
                     let actual = '';
@@ -241,11 +269,12 @@ suite('csver', function() {
                         }
                     }))
                     .on('finish', function() {
-                        assert.deepEqual(actual, expected); 
+                        assert.deepEqual(actual, expected);
+                        done();
                     });
                 });
     
-                test('should return "United States, India, South Korea, China" as country field for the first item', function() {
+                test('should return "United States, India, South Korea, China" as country field for the first item', function(done) {
                     const expected = '"United States, India, South Korea, China"';
                     let counter = 0;
                     let actual = '';
@@ -263,14 +292,15 @@ suite('csver', function() {
                         }
                     }))
                     .on('finish', function() {
-                        assert.deepEqual(actual, expected); 
+                        assert.deepEqual(actual, expected);
+                        done();
                     });
                 });
             });
 
             suite('second item values', function() {
 
-                test('should return 80117401 as show_id field for the second item', function() {
+                test('should return 80117401 as show_id field for the second item', function(done) {
                     const expected = '80117401';
                     let counter = 0;
                     let actual = '';
@@ -288,11 +318,12 @@ suite('csver', function() {
                         }
                     }))
                     .on('finish', function() {
-                        assert.deepEqual(actual, expected); 
+                        assert.deepEqual(actual, expected);
+                        done();
                     });
                 });
     
-                test('should return Movie as type field for the second item', function() {
+                test('should return Movie as type field for the second item', function(done) {
                     const expected = 'Movie';
                     let counter = 0;
                     let actual = '';
@@ -310,11 +341,12 @@ suite('csver', function() {
                         }
                     }))
                     .on('finish', function() {
-                        assert.deepEqual(actual, expected); 
+                        assert.deepEqual(actual, expected);
+                        done();
                     });
                 });
     
-                test('should return "Jandino: Whatever it Takes" as title field for the second item', function() {
+                test('should return "Jandino: Whatever it Takes" as title field for the second item', function(done) {
                     const expected = 'Jandino: Whatever it Takes';
                     let counter = 0;
                     let actual = '';
@@ -332,11 +364,12 @@ suite('csver', function() {
                         }
                     }))
                     .on('finish', function() {
-                        assert.deepEqual(actual, expected); 
+                        assert.deepEqual(actual, expected);
+                        done(); 
                     });
                 });
     
-                test('should return "" as director field for the second item', function() {
+                test('should return "" as director field for the second item', function(done) {
                     const expected = '';
                     let counter = 0;
                     let actual = '';
@@ -354,11 +387,12 @@ suite('csver', function() {
                         }
                     }))
                     .on('finish', function() {
-                        assert.deepEqual(actual, expected); 
+                        assert.deepEqual(actual, expected);
+                        done();
                     });
                 });
     
-                test('should return "Jandino Asporaat" as cast field for the second item', function() {
+                test('should return "Jandino Asporaat" as cast field for the second item', function(done) {
                     const expected = 'Jandino Asporaat';
                     let counter = 0;
                     let actual = '';
@@ -376,11 +410,12 @@ suite('csver', function() {
                         }
                     }))
                     .on('finish', function() {
-                        assert.deepEqual(actual, expected); 
+                        assert.deepEqual(actual, expected);
+                        done();
                     });
                 });
     
-                test('should return "United Kingdom" as country field for the second item', function() {
+                test('should return "United Kingdom" as country field for the second item', function(done) {
                     const expected = 'United Kingdom';
                     let counter = 0;
                     let actual = '';
@@ -398,7 +433,8 @@ suite('csver', function() {
                         }
                     }))
                     .on('finish', function() {
-                        assert.deepEqual(actual, expected); 
+                        assert.deepEqual(actual, expected);
+                        done();
                     });
                 });
             });

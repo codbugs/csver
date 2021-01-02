@@ -16,6 +16,9 @@ module.exports = function(options) {
 
         // (optional) set if csv file has headers, true by default
         hasHeaders: true,
+
+        // (optional) set header names for each column
+        headers: []
     };
 
     // initialize input parameters with the default options in case of being an object
@@ -43,6 +46,10 @@ module.exports = function(options) {
 
     if(!_.isBoolean(options.hasHeaders)) {
         throw new TypeError('hasHeaders must be true or false');
+    }
+
+    if(!_.isArray(options.headers)) {
+        throw new TypeError('headers must be an array');
     }
 
     return options;

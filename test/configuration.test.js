@@ -263,6 +263,59 @@ suite('csver', function() {
                     assert.deepEqual(configuration.hasHeaders, expected);
                 });
             });
+
+            suite('headers parameter', function() {
+
+                test('should throw error when is different from an array', function() {
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        headers: null
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        headers: 1
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        headers: 0
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        headers: -1
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        headers: undefined
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        headers: {}
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        headers: function() {}
+                    }), TypeError);
+                });
+
+                test('should return an empty array by default', function() {
+                    const expected = [];
+                    const configuration = new createConfiguration({
+                        filePath: './file.csv'
+                    });
+
+                    assert.deepEqual(configuration.headers, expected);
+                });
+
+                test('should return the list of headers passed', function() {
+                    const expected = ['id', 'title', 'description'];
+                    const configuration = new createConfiguration({
+                        filePath: './file.csv',
+                        headers: expected
+                    });
+
+                    assert.deepEqual(configuration.headers, expected);
+                });
+            });
         });
     });
 })

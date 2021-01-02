@@ -4,7 +4,7 @@ const { Transform } = require('stream');
 
 // stream definition
 module.exports = function() {
-
+    
     let haveBeenHeadersRead = false;
 
     return new Transform({

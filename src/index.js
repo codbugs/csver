@@ -19,7 +19,10 @@ module.exports = function(options) {
         asObject() {
             const data = parseAsArray(configuration);
             
-            return data.pipe(new objectTransformer());
+            return data.pipe(new objectTransformer({
+                hasHeaders: configuration.hasHeaders, 
+                optionalHeaders: configuration.headers
+            }));
         },
     };
 };

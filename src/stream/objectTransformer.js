@@ -1,33 +1,43 @@
 // imports
 const _ = require('lodash/core');
-const { Transform } = require('stream');
 
+const fileHeaderObjectTransformer = require('./fileHeaderObjectTransformer.js');
+const headerAvoider = require('./headerAvoider.js');
+const optionalHeaderObjectTransformer = require('./optionalHeaderObjectTransformer.js');
 
 // stream definition
-module.exports = function() {
+module.exports = function(options) {
 
-    let headers = [];
+    const defaults = {
+        hasHeaders: true,
+        optionalHeaders: []
+    };
 
-    // return the stream to split data in lines
-    return new Transform({
-        objectMode: true,
-        transform(chunk, encode, next) {
-            
-            // set the header fields the first chunk received
-            if(_.isEmpty(headers)) {
-                headers = chunk;
-                next();
-                return;
-            }
+    // parameters checking
+    if(!_.isObject(options)) {
+        options = {};
+    }
 
-            // object creation from headers
-            let output = {};
-            headers.forEach(function(header, index) {
-                output[header] = chunk[index];
-            });
+    options = _.extend(defaults, options);
 
-            this.push(output);
-            next();
-        }
-    });
+    if(!_.isBoolean(options.hasHeaders)) {
+        throw new TypeError('hasHeaders must be a boolean value');
+    }
+
+    if(!_.isArray(options.optionalHeaders)) {
+        throw new TypeError('optionalHeaders must be an array');
+    }
+
+
+    // check values passed
+    if(options.hasHeaders === false && _.isEmpty(options.optionalHeaders)) {
+        throw new Error('csv rows cannot be transformed to objects');
+    }
+
+    // return the proper transformation stream
+    const useFileHeaders = options.hasHeaders && _.isEmpty(options.optionalHeaders);
+
+    return useFileHeaders
+        ? new fileHeaderObjectTransformer()
+        : new optionalHeaderObjectTransformer(options.optionalHeaders, options.hasHeaders);
 }

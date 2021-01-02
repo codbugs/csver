@@ -3,7 +3,7 @@ const { suite, test } = require('mocha');
 const { assert } = require('chai');
 
 // helper libraries
-const { Transform, Writable } = require('stream');
+const { Writable } = require('stream');
 
 
 // import object to test
@@ -125,6 +125,7 @@ suite('csver', function() {
         suite('asObject method', function() {
 
             const filePath = './test/data/test_data.csv';
+            const filePathWithoutHeaders = './test/data/test_data_without_headers.csv';
 
             test('should return an Object per each chunk', function() {
                 const parser = new csver(filePath);
@@ -286,6 +287,336 @@ suite('csver', function() {
                         write(chunk, encoding, next) {
                             if(counter === 0) {
                                 actual = chunk['country'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected);
+                        done();
+                    });
+                });
+            });
+
+            suite('first item values with custom field headers', function() {
+
+                test('should return 81145628 as id field for the first item', function(done) {
+                    const expected = '81145628';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePath,
+                        hasHeaders: true,
+                        headers: ['id', 'type', 'title', 'director', 'cast', 'countries', 'addedOn', 'year', 'rating', 'duration', 'genres', 'description']
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['id'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected, 'ids are different');
+                        done();
+                    });
+                });
+    
+                test('should return Movie as type field for the first item', function(done) {
+                    const expected = 'Movie';
+                    let counter = 0;
+                    let actual = '';
+
+                    const parser = new csver({
+                        filePath: filePath,
+                        hasHeaders: true,
+                        headers: ['id', 'type', 'title', 'director', 'cast', 'countries', 'addedOn', 'year', 'rating', 'duration', 'genres', 'description']
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['type'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected);
+                        done();
+                    });
+                });
+    
+                test('should return "Norm of the North: King Sized Adventure" as title field for the first item', function(done) {
+                    const expected = 'Norm of the North: King Sized Adventure';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePath,
+                        hasHeaders: true,
+                        headers: ['id', 'type', 'title', 'director', 'cast', 'countries', 'addedOn', 'year', 'rating', 'duration', 'genres', 'description']
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['title'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected); 
+                        done();
+                    });
+                });
+    
+                test('should return "Richard Finn, Tim Maltby" as director field for the first item', function(done) {
+                    const expected = '"Richard Finn, Tim Maltby"';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePath,
+                        hasHeaders: true,
+                        headers: ['id', 'type', 'title', 'director', 'cast', 'countries', 'addedOn', 'year', 'rating', 'duration', 'genres', 'description']
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['director'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected);
+                        done();
+                    });
+                });
+    
+                test('should return "Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson" as cast field for the first item', function(done) {
+                    const expected = '"Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson"';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePath,
+                        hasHeaders: true,
+                        headers: ['id', 'type', 'title', 'director', 'cast', 'countries', 'addedOn', 'year', 'rating', 'duration', 'genres', 'description']
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['cast'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected);
+                        done();
+                    });
+                });
+    
+                test('should return "United States, India, South Korea, China" as country field for the first item', function(done) {
+                    const expected = '"United States, India, South Korea, China"';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePath,
+                        hasHeaders: true,
+                        headers: ['id', 'type', 'title', 'director', 'cast', 'countries', 'addedOn', 'year', 'rating', 'duration', 'genres', 'description']
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['countries'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected);
+                        done();
+                    });
+                });
+            });
+
+            suite('first item values with custom field headers with a file whithout headers', function() {
+
+                test('should return 81145628 as id field for the first item', function(done) {
+                    const expected = '81145628';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePathWithoutHeaders,
+                        hasHeaders: false,
+                        headers: ['id', 'type', 'title', 'director', 'cast', 'countries', 'addedOn', 'year', 'rating', 'duration', 'genres', 'description']
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['id'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected, 'ids are different');
+                        done();
+                    });
+                });
+    
+                test('should return Movie as type field for the first item', function(done) {
+                    const expected = 'Movie';
+                    let counter = 0;
+                    let actual = '';
+
+                    const parser = new csver({
+                        filePath: filePathWithoutHeaders,
+                        hasHeaders: false,
+                        headers: ['id', 'type', 'title', 'director', 'cast', 'countries', 'addedOn', 'year', 'rating', 'duration', 'genres', 'description']
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['type'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected);
+                        done();
+                    });
+                });
+    
+                test('should return "Norm of the North: King Sized Adventure" as title field for the first item', function(done) {
+                    const expected = 'Norm of the North: King Sized Adventure';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePathWithoutHeaders,
+                        hasHeaders: false,
+                        headers: ['id', 'type', 'title', 'director', 'cast', 'countries', 'addedOn', 'year', 'rating', 'duration', 'genres', 'description']
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['title'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected); 
+                        done();
+                    });
+                });
+    
+                test('should return "Richard Finn, Tim Maltby" as director field for the first item', function(done) {
+                    const expected = '"Richard Finn, Tim Maltby"';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePathWithoutHeaders,
+                        hasHeaders: false,
+                        headers: ['id', 'type', 'title', 'director', 'cast', 'countries', 'addedOn', 'year', 'rating', 'duration', 'genres', 'description']
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['director'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected);
+                        done();
+                    });
+                });
+    
+                test('should return "Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson" as cast field for the first item', function(done) {
+                    const expected = '"Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson"';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePathWithoutHeaders,
+                        hasHeaders: false,
+                        headers: ['id', 'type', 'title', 'director', 'cast', 'countries', 'addedOn', 'year', 'rating', 'duration', 'genres', 'description']
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['cast'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected);
+                        done();
+                    });
+                });
+    
+                test('should return "United States, India, South Korea, China" as country field for the first item', function(done) {
+                    const expected = '"United States, India, South Korea, China"';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePathWithoutHeaders,
+                        hasHeaders: false,
+                        headers: ['id', 'type', 'title', 'director', 'cast', 'countries', 'addedOn', 'year', 'rating', 'duration', 'genres', 'description']
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['countries'];
                                 counter++;
                             }
                             next();

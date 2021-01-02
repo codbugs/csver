@@ -39,8 +39,6 @@ suite('csver', function() {
                 });
 
             });
-
-
             
             suite('columnSplitter parameter', function() {
 
@@ -103,7 +101,6 @@ suite('csver', function() {
                 });
             });
 
-
             suite('lineSplitter parameter', function() {
 
                 test('should throw error when is different from a string', function() {
@@ -165,7 +162,6 @@ suite('csver', function() {
                 });
             });
 
-
             suite('filePath parameter', function() {
 
                 test('should throw error when is different from a string', function() {
@@ -215,6 +211,58 @@ suite('csver', function() {
                 });
             });
 
+            suite('hasHeaders parameter', function() {
+
+                test('should throw error when is different from a boolean', function() {
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        hasHeaders: null
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        hasHeaders: 1
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        hasHeaders: 0
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        hasHeaders: -1
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        hasHeaders: []
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        hasHeaders: {}
+                    }), TypeError);
+                    assert.throw(() => new createConfiguration({
+                        filePath: './file.csv',
+                        hasHeaders: function() {}
+                    }), TypeError);
+                });
+
+                test('should return true by default', function() {
+                    const expected = true;
+                    const configuration = new createConfiguration({
+                        filePath: './file.csv'
+                    });
+
+                    assert.deepEqual(configuration.hasHeaders, expected);
+                });
+
+                test('should return the value passed', function() {
+                    const expected = false;
+                    const configuration = new createConfiguration({
+                        filePath: './file.csv',
+                        hasHeaders: false
+                    });
+
+                    assert.deepEqual(configuration.hasHeaders, expected);
+                });
+            });
         });
     });
 })

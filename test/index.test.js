@@ -126,6 +126,7 @@ suite('csver', function() {
 
             const filePath = './test/data/test_data.csv';
             const filePathWithoutHeaders = './test/data/test_data_without_headers.csv';
+            const filePathWithSemicolon = './test/data/test_data_with_semicolon.csv';
 
             test('should return an Object per each chunk', function() {
                 const parser = new csver(filePath);
@@ -624,6 +625,90 @@ suite('csver', function() {
                     }))
                     .on('finish', function() {
                         assert.deepEqual(actual, expected);
+                        done();
+                    });
+                });
+            });
+
+            suite('first item values with a file with semicolon as column separator', function() {
+
+                test('should return dog as animal field for the first item', function(done) {
+                    const expected = 'dog';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePathWithSemicolon,
+                        hasHeaders: true,
+                        columnSplitter: ';'
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['animal'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected, 'animal fields are different');
+                        done();
+                    });
+                });
+    
+                test('should return mammal as type field for the first item', function(done) {
+                    const expected = 'mammal';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePathWithSemicolon,
+                        hasHeaders: true,
+                        columnSplitter: ';'
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['type'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected);
+                        done();
+                    });
+                });
+    
+                test('should return 4 as legs field for the first item', function(done) {
+                    const expected = '4';
+                    let counter = 0;
+                    let actual = '';
+    
+                    const parser = new csver({
+                        filePath: filePathWithSemicolon,
+                        hasHeaders: true,
+                        columnSplitter: ';'
+                    });
+    
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            if(counter === 0) {
+                                actual = chunk['legs'];
+                                counter++;
+                            }
+                            next();
+                        }
+                    }))
+                    .on('finish', function() {
+                        assert.deepEqual(actual, expected); 
                         done();
                     });
                 });

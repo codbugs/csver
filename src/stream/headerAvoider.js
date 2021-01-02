@@ -1,5 +1,4 @@
 // imports
-const _ = require('lodash/core');
 const { Transform } = require('stream');
 
 

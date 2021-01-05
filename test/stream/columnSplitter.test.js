@@ -136,7 +136,7 @@ suite('csver', function() {
                 });
 
                 test('should return an array with two items when passing ""abc",def"', function() {
-                    const expected = ['"abc"', "def"];
+                    const expected = ['abc', "def"];
 
                     const target = createColumnSplitterStream();
                     const stream = new saveResult();
@@ -155,7 +155,7 @@ suite('csver', function() {
                 
 
                 test('should return an array with two items when passing ""abc";def"', function() {
-                    const expected = ['"abc"', "def"];
+                    const expected = ['abc', "def"];
 
                     const target = createColumnSplitterStream(';');
                     const stream = new saveResult();

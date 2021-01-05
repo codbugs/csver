@@ -127,6 +127,7 @@ suite('csver', function() {
             const filePath = './test/data/test_data.csv';
             const filePathWithoutHeaders = './test/data/test_data_without_headers.csv';
             const filePathWithSemicolon = './test/data/test_data_with_semicolon.csv';
+            const filePathWithDoubleQuotesInHeaders = './test/data/test_data_double_quotes_in_headers.csv';
 
             test('should return an Object per each chunk', function() {
                 const parser = new csver(filePath);
@@ -231,7 +232,7 @@ suite('csver', function() {
                 });
     
                 test('should return "Richard Finn, Tim Maltby" as director field for the first item', function(done) {
-                    const expected = '"Richard Finn, Tim Maltby"';
+                    const expected = 'Richard Finn, Tim Maltby';
                     let counter = 0;
                     let actual = '';
     
@@ -248,13 +249,13 @@ suite('csver', function() {
                         }
                     }))
                     .on('finish', function() {
-                        assert.deepEqual(actual, expected);
+                        assert.deepEqual(expected, actual);
                         done();
                     });
                 });
     
                 test('should return "Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson" as cast field for the first item', function(done) {
-                    const expected = '"Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson"';
+                    const expected = 'Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson';
                     let counter = 0;
                     let actual = '';
     
@@ -277,7 +278,7 @@ suite('csver', function() {
                 });
     
                 test('should return "United States, India, South Korea, China" as country field for the first item', function(done) {
-                    const expected = '"United States, India, South Korea, China"';
+                    const expected = 'United States, India, South Korea, China';
                     let counter = 0;
                     let actual = '';
     
@@ -384,7 +385,7 @@ suite('csver', function() {
                 });
     
                 test('should return "Richard Finn, Tim Maltby" as director field for the first item', function(done) {
-                    const expected = '"Richard Finn, Tim Maltby"';
+                    const expected = 'Richard Finn, Tim Maltby';
                     let counter = 0;
                     let actual = '';
     
@@ -411,7 +412,7 @@ suite('csver', function() {
                 });
     
                 test('should return "Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson" as cast field for the first item', function(done) {
-                    const expected = '"Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson"';
+                    const expected = 'Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson';
                     let counter = 0;
                     let actual = '';
     
@@ -438,7 +439,7 @@ suite('csver', function() {
                 });
     
                 test('should return "United States, India, South Korea, China" as country field for the first item', function(done) {
-                    const expected = '"United States, India, South Korea, China"';
+                    const expected = 'United States, India, South Korea, China';
                     let counter = 0;
                     let actual = '';
     
@@ -549,7 +550,7 @@ suite('csver', function() {
                 });
     
                 test('should return "Richard Finn, Tim Maltby" as director field for the first item', function(done) {
-                    const expected = '"Richard Finn, Tim Maltby"';
+                    const expected = 'Richard Finn, Tim Maltby';
                     let counter = 0;
                     let actual = '';
     
@@ -576,7 +577,7 @@ suite('csver', function() {
                 });
     
                 test('should return "Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson" as cast field for the first item', function(done) {
-                    const expected = '"Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson"';
+                    const expected = 'Alan Marriott, Andrew Toth, Brian Dobson, Cole Howard, Jennifer Cameron, Jonathan Holmes, Lee Tockar, Lisa Durupt, Maya Kay, Michael Dobson';
                     let counter = 0;
                     let actual = '';
     
@@ -603,7 +604,7 @@ suite('csver', function() {
                 });
     
                 test('should return "United States, India, South Korea, China" as country field for the first item', function(done) {
-                    const expected = '"United States, India, South Korea, China"';
+                    const expected = 'United States, India, South Korea, China';
                     let counter = 0;
                     let actual = '';
     
@@ -853,6 +854,27 @@ suite('csver', function() {
                         done();
                     });
                 });
+            });
+
+            suite('headers', function() {
+               
+                test('should return headers without double quotes', function() {
+                    const expected = ['animal', 'type "of" animal', 'legs'];
+
+                    const parser = new csver(filePathWithDoubleQuotesInHeaders);
+
+                    parser.asObject().pipe(new Writable({
+                        objectMode: true,
+                        write(chunk, encoding, next) {
+                            let actual = Object.keys(chunk);
+
+                            assert.deepEqual(actual, expected);
+                            
+                            next();
+                        }
+                    }));
+                });
+                
             });
         });
 

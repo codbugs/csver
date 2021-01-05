@@ -20,7 +20,7 @@ module.exports = function(splitter) {
     // set default parameter value if not passed
     splitter = splitter || ',';
 
-    const expression = new RegExp(`(([^${splitter}"]*)|("[^""]+"))(${splitter}|$)`, 'gi');
+    const expression = new RegExp(`(([^${splitter}"]*)|("[^"]+")|(".+"))(${splitter}|$)`, 'gi');
 
     // return the stream to split data in lines
     return new Transform({
@@ -32,7 +32,10 @@ module.exports = function(splitter) {
             
             matches.pop(); // last item is always an empty string because of the regular expression
 
-            matches = matches.map(i => i.endsWith(splitter) ? i.slice(0, i.length-1) : i);
+            matches = matches
+                .map(i => i.endsWith(splitter) ? i.slice(0, i.length-1) : i)
+                .map(s => s.startsWith('"') && s.endsWith('"') ? s.slice(1, s.length-1) : s)
+                .map(s => s.replace(/""/gi, '"'));
 
             this.push(matches);
             next();

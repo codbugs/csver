@@ -1,6 +1,6 @@
 {
   "name": "csver",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A CSV file reader and parser based on Node.js `Stream` module",
   "homepage": "https://github.com/codbugs/csver",
   "bugs": {

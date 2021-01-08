@@ -54,11 +54,59 @@ Configuration object with:
 * _filePath (required)_: path to the csv file as a string,
 * _columnSplitter (optional)_: character that separates csv columns. Comma (,) character by default,
 * _lineSplitter (optional)_: characters that separates csv lines. Carriage return (\r) and line feed (\n) characters by default,
+* _filters (optional)_: array of callbacks to filter content provided when objects is returned. Callback function must return true or false after evaluating the object provided. An object with row values is provided to the callback allowing to check values, properties, etc.,
 * _hasHeaders (optional)_: boolean value to determine if csv file contains headers in the first line. By default, true is the value,
-* _headers (optional)_: set of strings to set as headers for the csv file.¡
+* _headers (optional)_: set of strings to set as headers for the csv file.
+
 
 ### **asArray()**
 Returns a `Transform` stream. Each chunk is an `Array` with data for the line read excluding the header in case of _hasHeaders_ parameter set as true.
 
 ### **asObject()**
 Returns a `Transform` stream. Each chunk is an `Object`, properties as the headers of the file, and data as the line read. If headers option has been set, properties will be these.
+
+## Example
+
+The following example shows how to use filters to avoid rows depending on the value of the first column. It is using the _"asArray()"_ method but you can use the _"asObject()"_ method as well.
+
+```javascript
+/* CSV CONTENT
+type,animal,legs
+mammal,dog,4
+bird,sparrow,2
+mammal,cat,4
+bird,stork,2
+*/
+
+
+// imports
+const csv = require('csver');
+const { Writable } = require('stream');
+
+// constant values
+const PATH = '/path/to/csv/file';
+const NON_VALID_ANIMAL = 'bird';
+
+// app definition
+const app = new csv({
+    filePath: PATH,
+    filters:  [item => item[0] !== NON_VALID_ANIMAL]
+});
+
+// output stream definition
+const output = new Writable({
+    objectMode: true,
+    write(chunk, encoding, next) {
+        console.log(chunk[0]);
+        next();
+    }
+});
+
+// show all items with first column different from the NON_VALID_ANIMAL constant.
+app.asArray().pipe(output);
+
+/* OUTPUT RESULT
+mammal,dog,4
+mammal,cat,4
+*/
+```

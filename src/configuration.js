@@ -12,7 +12,10 @@ module.exports = function(options) {
         lineSplitter: '\r\n', 
 
         // (required) relative or absoulte path to the csv file
-        filePath: null, // 
+        filePath: null,
+
+        // (optional) set of functions to filter content before pushing it out
+        filters: [],
 
         // (optional) set if csv file has headers, true by default
         hasHeaders: true,
@@ -42,6 +45,10 @@ module.exports = function(options) {
 
     if(_.isEmpty(options.filePath)) {
         throw new TypeError('filePath must be defined');
+    }
+
+    if(!_.isArray(options.filters)) {
+        throw new TypeError('filters must be an array of functions');
     }
 
     if(!_.isBoolean(options.hasHeaders)) {
